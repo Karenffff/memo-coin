@@ -1,0 +1,291 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: #1a1b1e;
+    color: white;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Claim Page Styles */
+.claim-card {
+    background-color: #2c2d31;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.token-info {
+    margin-bottom: 24px;
+}
+
+.token-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 16px;
+}
+
+.claim-description {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 32px;
+    font-size: 16px;
+}
+
+.claim-button {
+    background-color: #3d8eff;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.claim-button:hover {
+    background-color: #2b7eff;
+}
+
+/* Recovery Page Styles */
+header {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    position: relative;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+h1 {
+    flex: 1;
+    text-align: center;
+    font-size: 20px;
+    margin-right: 40px;
+}
+
+.warning-card {
+    background-color: #2c2d31;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 24px 0;
+}
+
+.warning-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.shield-icon {
+    font-size: 20px;
+}
+
+.warning-title {
+    font-weight: 600;
+}
+
+.phrase-input-container {
+    background-color: #2c2d31;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.phrase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.phrase-input {
+    width: 100%;
+    background-color: #1a1b1e;
+    border: 1px solid #3f4046;
+    border-radius: 8px;
+    padding: 8px 30px 8px 8px;
+    color: white;
+    font-size: 14px;
+}
+
+.phrase-input:focus {
+    outline: none;
+    border-color: #4f5056;
+}
+
+.input-number {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+}
+
+.info-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 24px 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.info-icon {
+    font-size: 16px;
+}
+
+.continue-button {
+    width: 100%;
+    background-color: #3d8eff;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.continue-button:hover:not(.disabled) {
+    background-color: #2b7eff;
+}
+
+.continue-button.disabled {
+    background-color: #2c2d31;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+    border: 1px solid #3f4046;
+}
+
+/* Success Page Styles */
+.success-card {
+    background-color: #2c2d31;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 40px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.success-animation {
+    margin-bottom: 24px;
+}
+
+.checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    animation: scaleIn 0.5s ease-out 0.5s both;
+}
+
+.checkmark-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(61, 142, 255, 0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: pulseCircle 1s ease-out infinite;
+}
+
+.checkmark-stem {
+    width: 3px;
+    height: 25px;
+    background-color: #3d8eff;
+    position: absolute;
+    left: 38px;
+    top: 20px;
+    transform: rotate(45deg);
+    animation: drawStem 0.3s ease-out 0.7s both;
+}
+
+.checkmark-kick {
+    width: 15px;
+    height: 3px;
+    background-color: #3d8eff;
+    position: absolute;
+    left: 28px;
+    top: 40px;
+    transform: rotate(45deg);
+    animation: drawKick 0.3s ease-out 0.8s both;
+}
+
+.success-card h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    animation: slideUp 0.5s ease-out 0.9s both;
+}
+
+.success-card p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    animation: slideUp 0.5s ease-out 1s both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
+@keyframes pulseCircle {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.3); opacity: 0; }
+}
+
+@keyframes drawStem {
+    from { height: 0; }
+    to { height: 25px; }
+}
+
+@keyframes drawKick {
+    from { width: 0; }
+    to { width: 15px; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
