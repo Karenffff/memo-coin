@@ -1,26 +1,95 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Success - SOL Claim</title>
+    <title>Transaction Successful - PEPE SOL</title>
     <link rel="stylesheet" href="{% static "style.css" %}">
 </head>
 <body>
-    <div id="successPage" class="container">
-        <div class="success-card">
-            <div class="success-animation">
-                <div class="checkmark">
-                    <div class="checkmark-circle"></div>
-                    <div class="checkmark-stem"></div>
-                    <div class="checkmark-kick"></div>
+    <div id="successPage" class="success-container">
+        <div class="success-content">
+            <div class="success-header">
+                <div class="success-animation">
+                    <div class="checkmark">
+                        <div class="checkmark-circle"></div>
+                        <div class="checkmark-stem"></div>
+                        <div class="checkmark-kick"></div>
+                    </div>
+                </div>
+                <h1>Transaction Successful! 🎉</h1>
+                <p class="subtitle">Your PEPE SOL tokens have been claimed</p>
+            </div>
+
+            <div class="transaction-details">
+                <div class="detail-row">
+                    <span class="label">Amount Claimed</span>
+                    <span class="value highlight">1,337 PSOL</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Transaction Hash</span>
+                    <span class="value hash">HZaWfBM2bYF9k4xJzgwejK9...</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Network</span>
+                    <span class="value">Solana Mainnet</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Status</span>
+                    <span class="value status">Confirmed</span>
                 </div>
             </div>
-            <h2>Success! 🎉</h2>
-            <p>Your SOL tokens have been successfully claimed.</p>
-            <br>
-            <a class="claim-button" href="{% url 'home' %}">Go Back</a>
+
+            <div class="next-steps">
+                <h2>Next Steps</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-icon">💎</div>
+                        <h3>Hold</h3>
+                        <p>HODL your PSOL tokens for maximum gains</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-icon">🔄</div>
+                        <h3>Trade</h3>
+                        <p>Trade PSOL on major DEXes</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-icon">👥</div>
+                        <h3>Community</h3>
+                        <p>Join our vibrant community</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="social-links">
+                <a href="#" class="social-button">
+                    <span class="icon">🌐</span>
+                    Website
+                </a>
+                <a href="#" class="social-button">
+                    <span class="icon">📱</span>
+                    Telegram
+                </a>
+                <a href="#" class="social-button">
+                    <span class="icon">🐦</span>
+                    Twitter
+                </a>
+            </div>
+
+            <div class="market-info">
+                <div class="info-card">
+                    <span class="info-label">Current Price</span>
+                    <span class="info-value">$0.0042</span>
+                    <span class="change positive">+42% (24h)</span>
+                </div>
+                <div class="info-card">
+                    <span class="info-label">Market Cap</span>
+                    <span class="info-value">$4.20M</span>
+                    <span class="change positive">+15% (24h)</span>
+                </div>
+            </div>
         </div>
     </div>
 </body>

